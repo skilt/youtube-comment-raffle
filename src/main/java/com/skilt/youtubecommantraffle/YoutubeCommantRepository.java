@@ -6,6 +6,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.CommentSnippet;
 import com.google.api.services.youtube.model.CommentThread;
 import com.google.api.services.youtube.model.CommentThreadListResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -40,8 +41,17 @@ public class YoutubeCommantRepository {
         .list(Collections.singletonList("snippet"));
     CommentThreadListResponse response = request.setKey(apiKey)
         .setVideoId(videoId)
+        .setMaxResults(100l)
         .execute();
-    System.out.println(response);
+
+    List<CommentThread> videoComments = response.getItems();
+    System.out.println(videoComments.size());
+    for(CommentThread videoComment : videoComments){
+      CommentSnippet snippet = videoComment.getSnippet().getTopLevelComment().getSnippet();
+      System.out.println("UserName: " + snippet.getAuthorDisplayName());
+      System.out.println("comment: " + snippet.getTextDisplay());
+      System.out.println("-----------------------------------------------------");
+    }
     log.info("videoId: {}",videoId);
   }
 }

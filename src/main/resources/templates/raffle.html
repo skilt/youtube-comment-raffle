@@ -3,6 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <title>유튜브 댓글 추첨</title>
+  <script>
+    function onResponse(result){
+      // 화면에 뿌려주기
+      var commentElement = document.createElement('p');
+      commentElement.innerHTML = result.authorDisplayName + ': ' + result.textOriginal;
+
+      var commentListElement = document.getElementById('commentList');
+      commentListElement.appendChild(commentElement);
+    }
+
+    // 버튼 누르면
+    function doRaffle() {
+      // link, count값을 읽어
+      var link = document.getElementById('link').value;
+      var count = document.getElementById('count').value;
+      var url = '/api/' + link + '?count=' + count;
+
+      // api로 전송하고
+      fetch(url)
+        .then((result) => {
+          return result.json();
+        })
+        .then(onResponse)
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  </script>
 </head>
 <body>
 <h1>
@@ -10,22 +38,21 @@
 </h1>
 <br>
 <div class="container">
-  <form action="/api/{videoId}" method="post">
-    <div class="form-group">
-      <label for="link">유튜브 영상 링크 입력: </label>
-      <input type="text" id="link" name="link" placeholder="Youtube URL 혹은 Video ID" size=40>
-    </div>
-    <div>
-      <label for="count">뽑을 인원 수 입력: </label>
-      <input type="number" id="count" name="count" min="1" max="10">
-    </div>
-    <br>
-    <button type="submit">
-      추첨 시작!
-    </button>
-  </form>
+  <div class="form-group">
+    <label for="link">유튜브 영상 링크 입력: </label>
+    <input type="text" id="link" name="link" placeholder="Youtube URL 혹은 Video ID" size=40>
+  </div>
+  <div>
+    <label for="count">뽑을 인원 수 입력: </label>
+    <input type="number" id="count" name="count" min="1" max="10">
+  </div>
+  <br>
+  <button onclick="doRaffle()">
+    추첨 시작!
+  </button>
 </div>
 <br>
-
+<div id="commentList">
+</div>
 </body>
 </html>

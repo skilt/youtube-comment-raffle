@@ -29,9 +29,7 @@ public class CommantRaffleController {
 
   @GetMapping("/api/{videoId}")
   @ResponseBody
-  public void commantRaffle(@PathVariable("videoId") String videoId, @RequestParam("count") int count) throws GeneralSecurityException, IOException {
-    CommentSnippet comment = commantRaffleService.raffleComment(videoId,count);
-    log.info("videoId: {}, count: {}",videoId,count);
-    log.info("이름: {}, 내용: {}",comment.getAuthorDisplayName(),comment.getTextDisplay());
+  public CommentSnippet commantRaffle(@PathVariable("videoId") String videoId, @RequestParam("count") int count) throws GeneralSecurityException, IOException {
+    return commantRaffleService.raffleComment(videoId,count);
   }
 }

@@ -6,6 +6,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.Comment;
 import com.google.api.services.youtube.model.CommentSnippet;
 import com.google.api.services.youtube.model.CommentThread;
 import com.google.api.services.youtube.model.CommentThreadListResponse;
@@ -34,24 +35,31 @@ public class YoutubeCommantRepository {
         .build();
   }
 
-  public void getComments(String videoId) throws GeneralSecurityException, IOException, GoogleJsonResponseException {
+  public CommentSnippet getComments(String videoId, int batchSize, int batchCount) throws GeneralSecurityException, IOException {
     YouTube youtube = getService();
     // Define and execute the API request
     YouTube.CommentThreads.List request = youtube.commentThreads()
         .list(Collections.singletonList("snippet"));
-    CommentThreadListResponse response = request.setKey(apiKey)
-        .setVideoId(videoId)
-        .setMaxResults(100l)
-        .execute();
 
-    List<CommentThread> videoComments = response.getItems();
-    System.out.println(videoComments.size());
-    for(CommentThread videoComment : videoComments){
-      CommentSnippet snippet = videoComment.getSnippet().getTopLevelComment().getSnippet();
-      System.out.println("UserName: " + snippet.getAuthorDisplayName());
-      System.out.println("comment: " + snippet.getTextDisplay());
-      System.out.println("-----------------------------------------------------");
+    CommentThreadListResponse response = null;
+    String token = null;
+    for (int i = 0; i < batchCount; i++) {
+      response = request.setKey(apiKey)
+          .setVideoId(videoId)
+          .setMaxResults((long) batchSize)
+          .setPageToken(token)
+          .execute();
+      token = response.getNextPageToken();
+      if(token == null){
+        break;
+      }
     }
-    log.info("videoId: {}",videoId);
+
+    if(response == null || response.getItems().isEmpty()){
+      return null;
+    }
+
+    // 여기서 1개 뽑아야함
+    return response.getItems().get(0).getSnippet().getTopLevelComment().getSnippet();
   }
 }

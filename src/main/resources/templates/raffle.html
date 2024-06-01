@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>유튜브 댓글 추첨</title>
+</head>
+<body>
+<h1>
+  유튜브 댓글 추첨
+</h1>
+<br>
+<div class="container">
+  <form action="/api/{videoId}" method="post">
+    <div class="form-group">
+      <label for="link">유튜브 영상 링크 입력: </label>
+      <input type="text" id="link" name="link" placeholder="Youtube URL 혹은 Video ID" size=40>
+    </div>
+    <div>
+      <label for="count">뽑을 인원 수 입력: </label>
+      <input type="number" id="count" name="count" min="1" max="10">
+    </div>
+    <br>
+    <button type="submit">
+      추첨 시작!
+    </button>
+  </form>
+</div>
+<br>
+
+</body>
+</html>

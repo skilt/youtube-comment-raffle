@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -29,7 +30,7 @@ public class CommantRaffleController {
 
   @GetMapping("/api/{videoId}")
   @ResponseBody
-  public CommentSnippet commantRaffle(@PathVariable("videoId") String videoId, @RequestParam("count") int count) throws GeneralSecurityException, IOException {
+  public List<CommentSnippet> commantRaffle(@PathVariable("videoId") String videoId, @RequestParam("count") int count) throws GeneralSecurityException, IOException {
     return commantRaffleService.raffleComment(videoId,count);
   }
 }

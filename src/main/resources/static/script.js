@@ -13,7 +13,6 @@ function onResponse(result){
 function doRaffle() {
   var commentListElement = document.getElementById('commentList');
   commentListElement.innerHTML = '<img src="loading.gif"/>';
-
   // link, count값을 읽어
   var link = document.getElementById('link').value;
   var count = document.getElementById('count').value;

@@ -12,7 +12,6 @@ function onResponse(result){
 // 버튼 누르면
 function doRaffle() {
   var commentListElement = document.getElementById('commentList');
-  commentListElement.innerHTML = '<img src="loading.gif"/>';
   // link, count값을 읽어
   var link = document.getElementById('link').value;
   var count = document.getElementById('count').value;
@@ -24,6 +23,7 @@ function doRaffle() {
     window.alert("최대 추첨 인원 수는 10명 아래입니다.");
   }
   else{
+    commentListElement.innerHTML = '<img src="loading.gif"/>';
   // api로 전송하고
     fetch(url)
       .then((result) => {

@@ -29,6 +29,11 @@ button{
     color: white;
     background-color: red;
     text-align: center;
+    padding: 4px 28px;
+}
+.button-group{
+    display: flex;
+    justify-content: center;
 }
 #commentList{
     text-align: center;

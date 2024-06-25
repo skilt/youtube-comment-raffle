@@ -15,7 +15,14 @@ function doRaffle() {
   // link, count값을 읽어
   var link = document.getElementById('link').value;
   var count = document.getElementById('count').value;
-  var url = '/api/' + link + '?count=' + count;
+  var reg = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]vi?=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+  var match = link.match(reg); // match[1]에 들어있음
+  if (match && match[1].length == 11){
+    var url = '/api/' + match[1] + '?count=' + count;
+  }
+  else{
+    window.alert("동영상을 찾을 수 없습니다.");
+  }
   if(count < 1){
     window.alert("최소 추첨 인원 수는 1명 이상이어야 합니다.");
   }
